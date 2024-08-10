@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./server
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 8000
+
+    volumes:
+      - ./server:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build: ./client
+    ports:
+      - "5173:5173"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    command: npm run dev -- --host
